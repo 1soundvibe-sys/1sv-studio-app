@@ -759,6 +759,25 @@ const TABS = [
   {id:"tour",    label:"Tour",    Icon:Camera},
 ];
 
+/* ── TOUR VIEW ── */
+function TourView() {
+  const galleryUrl = "https://share.google/MJ2dcHweYQWsJpOMx";
+  React.useEffect(() => {
+    window.open(galleryUrl, "_blank", "noopener,noreferrer");
+  }, []);
+  return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:"100%",gap:20,padding:24}}>
+      <Camera size={48} color={G}/>
+      <div style={{...bebas,fontSize:26,letterSpacing:"0.05em",textAlign:"center"}}>STUDIO PHOTOS</div>
+      <div style={{...mono,fontSize:10,color:MT2,textAlign:"center",lineHeight:1.6}}>See our studios on Google</div>
+      <a href={galleryUrl} target="_blank" rel="noopener noreferrer" className="tap"
+        style={{display:"block",textAlign:"center",padding:"14px 28px",background:G,borderRadius:12,color:"#000",...bebas,fontSize:20,letterSpacing:"0.06em"}}>
+        VIEW PHOTO GALLERY →
+      </a>
+    </div>
+  );
+}
+
 function App(){
   const [tab, setTab]   = useState("book");
   const [tour, setTour] = useState(true);
