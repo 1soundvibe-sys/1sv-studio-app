@@ -28,12 +28,41 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
-  <script>window.require = function(mod) { if (mod === "react") return window.React; };</script>
-  <script src="https://unpkg.com/lucide-react@0.383.0/dist/umd/lucide-react.js" crossorigin></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.383.0/dist/umd/lucide.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone@7.23.0/babel.min.js" crossorigin></script>
 
+  <script>
+    // Wrap lucide vanilla icons as React function components
+    (function() {
+      var iconNames = ['Mic2','Sliders','Radio','Camera','Users','Zap','Building2','Crown','BarChart3','BookOpen','Waves','ExternalLink','Check','X','Megaphone','Music','Send'];
+      iconNames.forEach(function(name) {
+        var iconData = window.lucide[name];
+        if (!iconData) return;
+        window.lucide[name] = function LucideIcon(props) {
+          props = props || {};
+          var svgAttrs = {
+            xmlns: 'http://www.w3.org/2000/svg',
+            width: props.size || props.width || 24,
+            height: props.size || props.height || 24,
+            viewBox: '0 0 24 24',
+            fill: 'none',
+            stroke: props.color || props.stroke || 'currentColor',
+            strokeWidth: props.strokeWidth || 2,
+            strokeLinecap: 'round',
+            strokeLinejoin: 'round',
+            className: props.className,
+            style: props.style
+          };
+          var children = (iconData[2] || []).map(function(child, i) {
+            return React.createElement(child[0], Object.assign({ key: i }, child[1]));
+          });
+          return React.createElement.apply(React, ['svg', svgAttrs].concat(children));
+        };
+      });
+    })();
+  </script>
   <script type="text/babel" data-presets="react">
-    const { Mic2,Sliders,Radio,Camera,Users,Zap,Building2,Crown,BarChart3,BookOpen,Waves,ExternalLink,Check,X,Megaphone,Music,Send } = LucideReact;
+    const { Mic2,Sliders,Radio,Camera,Users,Zap,Building2,Crown,BarChart3,BookOpen,Waves,ExternalLink,Check,X,Megaphone,Music,Send } = lucide;
     const { useState } = React;
 
     const FORMSPREE_ID = "mzdkvqog"; // your Formspree form ID
