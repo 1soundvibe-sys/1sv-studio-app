@@ -122,9 +122,8 @@ const cap   = {...mono,fontSize:9,letterSpacing:"0.15em",textTransform:"uppercas
 
 /* ── ENGINEERS (beats removed from James & Dajpway) ── */
 const ENGINEERS = [
-  { name:"James",    role:"Senior Engineer & Studio Manager",          sub:"7+ years · Recording · Mixing · Mastering",                  ini:"JM", color:"#C9A84C", ext:null },
+  { name:"James",    role:"Senior Engineer & Studio Manager",          sub:"7+ years · Recording · Mixing · Mastering",                  ini:"JM", color:"#C9A84C", ext:"https://stargazerstudios.me/" },
   { name:"Dajpway",  role:"Senior Engineer · Videographer · Photographer", sub:"freegameproductions.com",                               ini:"DJ", color:"#7B8FD4", ext:"https://www.freegameproductions.com" },
-  { name:"Jeanetta", role:"Producer · Sync Supervisor · Engineer",    sub:"audiodoright.com",                                           ini:"JN", color:"#5DB882", ext:"https://audiodoright.com" },
 ];
 
 /* ── SERVICE DATA ── */
@@ -160,7 +159,6 @@ const SECTIONS = [
       {label:"2HR Block Time",               hrs:2,  price:60,  hot:false, url:BASE+"2hr-block-time-no-engineer"},
       {label:"3HR Block Time",               hrs:3,  price:60,  hot:false, url:BASE+"3hr-blocktime-no-engineer"},
       {label:"2HR Recording — No Eng.",      hrs:2,  price:40,  hot:false, url:BASE+"2hr-recording-no-engineer"},
-      {label:"2HR Early Bird (Before 5PM)",  hrs:2,  price:100, hot:false, url:BASE+"2hr-50-before-5"},
       {label:"Studio A — 6HR Block",         hrs:6,  price:200, hot:false, url:BASE+"studio-a-6-hr-block"},
       {label:"Studio A — 12HR Block",        hrs:12, price:300, hot:false, url:BASE+"studio-a-12-hr-block"},
       {label:"Studio B — 6HR Block",         hrs:6,  price:200, hot:false, url:BASE+"studio-b-6-hr-block"},
@@ -277,7 +275,7 @@ function TourModal({ onClose }) {
         </div>
         <div style={{padding:"16px 18px 20px"}}>
           <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
-            {["Meet James, Dajpway & Jeanetta","See Da Spaceship (Studio A) + Black Orbit (Studio B)","Hear the rooms, check the gear","Zero pressure. Zero cost."].map((t,i)=>(
+            {["Meet James & Dajpway","See Da Spaceship (Studio A) + Black Orbit (Studio B)","Hear the rooms, check the gear","Zero pressure. Zero cost."].map((t,i)=>(
               <div key={i} style={{display:"flex",alignItems:"center",gap:9}}>
                 <Check size={12} color={G}/>
                 <span style={{...mono,fontSize:10,color:MT2}}>{t}</span>
@@ -300,7 +298,7 @@ function TourModal({ onClose }) {
 }
 
 /* ── BOOK VIEW ── */
-function BookView() {
+function BookView({ onEarlyBird }) {
   const [open, setOpen] = useState(null);
 
   /* ── EDIT THIS PROMO SECTION ── */
@@ -446,6 +444,15 @@ function BookView() {
                     </a>
                   ))}
                 </div>
+                {sec.id === "block" && onEarlyBird && (
+                  <button onClick={onEarlyBird} style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%",padding:"12px 14px",background:"rgba(201,168,76,.08)",border:"none",borderTop:`1px solid ${BR}`,cursor:"pointer",textAlign:"left"}}>
+                    <div>
+                      <div style={{...bebas,fontSize:15,color:"#fff",letterSpacing:"0.04em",lineHeight:1}}>🌅 2HR EARLY BIRD (BEFORE 5PM)</div>
+                      <div style={{...cap,fontSize:8,color:"#C9A84C",marginTop:2}}>SELF-DIRECTED · NO ENGINEER</div>
+                    </div>
+                    <div style={{...bebas,fontSize:18,color:"#C9A84C"}}>$100 →</div>
+                  </button>
+                )}
               )}
             </div>
           );
@@ -537,7 +544,7 @@ const SERVICE_OPTIONS = [
   { id:"media_press",  label:"Media & Press",      emoji:"📰", desc:"Press releases, media features, PR campaigns" },
   { id:"epk",          label:"EPK / Press Kit",     emoji:"📸", desc:"Artist bio, photos, one-sheets, digital kits" },
   { id:"website",      label:"Website Design",      emoji:"🌐", desc:"Artist sites, landing pages, link-in-bio" },
-  { id:"sync",         label:"Sync Licensing",      emoji:"🎵", desc:"Place your music in TV, film, ads — Jeanetta supervises" },
+  { id:"sync",         label:"Sync Licensing",      emoji:"🎵", desc:"Place your music in TV, film, ads" },
   { id:"songwriter",   label:"Songwriter / Writer", emoji:"✍️", desc:"Co-writing sessions, topline, lyrics" },
   { id:"producer",     label:"Production",          emoji:"🎛️", desc:"Full production, beat-making, arrangement" },
   { id:"photography",  label:"Photography",         emoji:"📷", desc:"Press kit, cover art, events — Dajpway shoots" },
@@ -596,7 +603,6 @@ function InquiryView() {
         {[
           {ini:"JM",name:"James",    role:"Engineer",              color:"#C9A84C", ext:null},
           {ini:"DJ",name:"Dajpway",  role:"Eng · Photo · Video",   color:"#7B8FD4", ext:"https://www.freegameproductions.com"},
-          {ini:"JN",name:"Jeanetta", role:"Producer · Sync · Eng", color:"#5DB882", ext:"https://audiodoright.com"},
         ].map(e=>(
           <div key={e.name} style={{flex:1,background:S2,border:`1px solid ${BR}`,borderRadius:12,padding:"10px 8px",textAlign:"center"}}>
             <div style={{width:36,height:36,borderRadius:"50%",background:`${e.color}20`,border:`1.5px solid ${e.color}50`,
@@ -759,11 +765,71 @@ const TABS = [
   {id:"plans",   label:"Plans",   Icon:Crown},
   {id:"inquire", label:"Inquire", Icon:Send},
   {id:"amb",     label:"Refer",   Icon:Megaphone},
+  {id:"tour",    label:"Tour",    Icon:Camera},
 ];
+
+function EarlyBirdModal({ onClose }) {
+  return (
+    <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,.92)",zIndex:200,display:"flex",alignItems:"flex-end",padding:14}}>
+      <div className="modal-up" style={{width:"100%",background:S1,borderRadius:22,border:`2px solid ${G}`,overflow:"hidden",padding:24}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+          <div>
+            <div style={{color:G,fontFamily:HF,fontSize:18,fontWeight:700,letterSpacing:1}}>🌅 2HR EARLY BIRD</div>
+            <div style={{color:"#aaa",fontSize:13,marginTop:4}}>Before 5PM · Self-Directed · No Engineer</div>
+          </div>
+          <button onClick={onClose} style={{background:"none",border:"none",color:"#666",fontSize:22,cursor:"pointer",padding:4}}>✕</button>
+        </div>
+        <div style={{background:"rgba(201,168,76,.08)",border:"1px solid rgba(201,168,76,.2)",borderRadius:14,padding:"14px 16px",marginBottom:20}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+            <span style={{color:"#fff",fontWeight:600,fontSize:16}}>2HR Block Time (Before 5PM)</span>
+            <span style={{color:G,fontFamily:HF,fontSize:20,fontWeight:700}}>$100</span>
+          </div>
+          <div style={{color:"#888",fontSize:13,lineHeight:1.5}}>Book the studio on your schedule. No engineer included. Must start before 5PM.</div>
+        </div>
+        <div style={{display:"flex",gap:10}}>
+          <a href={BASE+"2hr-50-before-5"} target="_blank" style={{flex:1,display:"block",textAlign:"center",padding:"14px 0",background:G,borderRadius:12,color:"#000",fontFamily:HF,fontSize:14,fontWeight:700,letterSpacing:1,textDecoration:"none"}}>BOOK NOW →</a>
+          <button onClick={onClose} style={{flex:1,padding:"14px 0",background:"rgba(255,255,255,.06)",border:"1px solid rgba(255,255,255,.1)",borderRadius:12,color:"#aaa",fontFamily:HF,fontSize:13,cursor:"pointer"}}>MAYBE LATER</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TourView() {
+  return (
+    <div style={{padding:"0 4px"}}>
+      <div style={{position:"relative",height:200,borderRadius:16,overflow:"hidden",marginBottom:20}}>
+        <Img src={IMG.hero} style={{width:"100%",height:"100%"}}/>
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom,rgba(0,0,0,.2),rgba(0,0,0,.85))"}}/>
+        <div style={{position:"absolute",bottom:20,left:20,right:20}}>
+          <div style={{color:G,fontFamily:HF,fontSize:22,fontWeight:700,letterSpacing:1}}>BOOK A STUDIO TOUR</div>
+          <div style={{color:"rgba(255,255,255,.8)",fontSize:14,marginTop:4}}>See the vibe. No cost. No pressure.</div>
+        </div>
+      </div>
+      <div style={{background:S1,borderRadius:16,border:`1px solid ${BR}`,padding:"16px 18px",marginBottom:16}}>
+        {["Meet James & Dajpway","See Da Spaceship (Studio A) + Black Orbit (Studio B)","Hear the rooms, check the gear","Zero pressure. Zero cost."].map((item,i)=>(
+          <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 0",borderBottom:i<3?`1px solid ${BR}`:"none"}}>
+            <span style={{color:G,marginTop:2,flexShrink:0}}>✓</span>
+            <span style={{color:"#ccc",fontSize:14,lineHeight:1.5}}>{item}</span>
+          </div>
+        ))}
+      </div>
+      <a href="https://www.1svstudios.com/book-a-studio-tour" target="_blank"
+        style={{display:"block",textAlign:"center",padding:"16px 0",background:G,borderRadius:14,color:"#000",fontFamily:HF,fontSize:15,fontWeight:700,letterSpacing:1.5,textDecoration:"none",marginBottom:12}}>
+        BOOK THE TOUR NOW →
+      </a>
+      <div style={{textAlign:"center",color:"#666",fontSize:13,paddingBottom:8}}>
+        📍 1 Soundvibe Studios · Houston Heights · 77007
+      </div>
+    </div>
+  );
+}
+
 
 function App(){
   const [tab, setTab]   = useState("book");
   const [tour, setTour] = useState(true);
+  const [earlyBird, setEarlyBird] = useState(false);
 
   return(
     <div style={{minHeight:"100vh",background:"#030303",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
@@ -772,7 +838,8 @@ function App(){
         boxShadow:"0 0 0 1px #1a1a1a,0 0 0 3px #0a0a0a,0 60px 140px rgba(0,0,0,.95)",
         overflow:"hidden",display:"flex",flexDirection:"column",position:"relative"}}>
 
-        {tour && <TourModal onClose={()=>setTour(false)}/>}
+        {tour && <TourModal onClose={()=>setTour(false)}/> }
+        {earlyBird && <EarlyBirdModal onClose={()=>setEarlyBird(false)}/>}
 
         {/* Status bar */}
         <div style={{padding:"13px 28px 0",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
@@ -808,10 +875,11 @@ function App(){
 
         {/* Scrollable content */}
         <div style={{flex:1,overflowY:"auto",padding:"13px 15px 10px"}}>
-          {tab==="book"    && <BookView/>}
+          {tab==="book"    && <BookView onEarlyBird={()=>setEarlyBird(true)}/>}
           {tab==="plans"   && <PlansView/>}
           {tab==="inquire" && <InquiryView/>}
           {tab==="amb"     && <AmbView/>}
+          {tab==="tour"    && <TourView/>}
         </div>
 
         {/* Bottom nav — 5 tabs */}
